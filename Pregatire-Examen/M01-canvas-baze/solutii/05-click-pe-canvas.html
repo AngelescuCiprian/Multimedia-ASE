@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 05 · SOLUȚIE</title>
+    <style>
+        canvas { border: 1px solid black; display: block; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="300">
+        Browserul nu suportă canvas.
+    </canvas>
+    <button id="btn-clear">Șterge tot</button>
+
+    <script>
+        const circles = [];
+        let mouse = { x: 0, y: 0 };
+
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        function draw() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // toate cercurile din stare
+            context.fillStyle = 'blue';
+            for (const circle of circles) {
+                context.beginPath();                                   // fiecare cerc = path nou
+                context.arc(circle.x, circle.y, 10, 0, 2 * Math.PI);
+                context.fill();
+            }
+
+            // coordonatele
+            context.fillStyle = 'black';
+            context.font = '14px monospace';
+            context.textAlign = 'left';
+            context.textBaseline = 'top';
+            context.fillText(`x: ${mouse.x}, y: ${mouse.y}`, 5, 5);
+        }
+
+        canvas.addEventListener('click', (e) => {
+            circles.push({ x: e.offsetX, y: e.offsetY });
+            draw();
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            mouse = { x: e.offsetX, y: e.offsetY };
+            draw();
+        });
+
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            circles.length = 0;   // golește array-ul păstrând aceeași referință (e const)
+            draw();
+        });
+
+        draw();
+
+        // De reținut: ăsta e modelul mental pentru orice aplicație canvas
+        // (bar chart, joc, editor): STARE în variabile + draw() care pornește de la zero.
+    </script>
+</body>
+</html>

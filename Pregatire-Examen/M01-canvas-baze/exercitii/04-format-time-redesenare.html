@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 04 · formatTime + redesenare</title>
+    <style>
+        canvas { border: 1px solid black; display: block; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="120">
+        Browserul nu suportă canvas.
+    </canvas>
+    <button id="btn-forward">+15 s</button>
+    <button id="btn-reset">Reset</button>
+
+    <script>
+        /*
+         * CONTEXT: e o „repetiție” pentru examen fără audio. Variabila `seconds`
+         * joacă rolul lui audio.currentTime.
+         *
+         * CERINȚĂ
+         * 1. Scrie funcția formatTime(seconds) care întoarce un string "mm:ss".
+         *       formatTime(0)      → "00:00"
+         *       formatTime(7.9)    → "00:07"   (rotunjire în jos)
+         *       formatTime(207.6)  → "03:27"
+         *       formatTime(3600)   → "60:00"
+         *    Indicii: Math.floor, %, String(x).padStart(2, '0')
+         * 2. Scrie funcția draw() care:
+         *       - șterge canvas-ul
+         *       - desenează fundal galben deschis (#FFF8DC)
+         *       - scrie "Timp: mm:ss" centrat, font 32px Arial
+         * 3. "+15 s" adaugă 15 la `seconds` și redesenează. "Reset" pune 0 și redesenează.
+         * 4. Desenul inițial trebuie să apară la încărcarea paginii (fără click).
+         *
+         * EXPERIMENT: scoate clearRect ȘI fundalul din draw(). Apasă de 5 ori „+15 s”. Ce vezi?
+         */
+
+        let seconds = 0;
+
+        // TODO 1: formatTime(seconds)
+
+        // TODO 2: canvas, context și draw()
+
+        // TODO 3: event listeners pe butoane
+
+        // TODO 4: desenul inițial
+
+        // Verificare în consolă (decomentează după TODO 1):
+        // console.log(formatTime(0), formatTime(7.9), formatTime(207.6), formatTime(3600));
+    </script>
+</body>
+</html>

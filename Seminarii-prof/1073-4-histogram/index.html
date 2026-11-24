@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histogram</title>
+</head>
+<body>
+    <canvas id="image-canvas">
+        Your browser does not support the canvas element.
+    </canvas>
+    <canvas id="histogram-canvas">
+        Your browser does not support the canvas element.
+    </canvas>
+    <script type="module">
+        import {BarChart} from './canvas-bar-chart-library.js';
+
+        // Selectors
+        const imageCanvas = document.getElementById('image-canvas');
+        const histogramCanvas = document.getElementById('histogram-canvas');
+
+        // Events
+        //https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
+
+        document.addEventListener('dragover', (e)=>{
+            e.preventDefault();
+        });
+
+        document.addEventListener('drop', (e)=>{
+            e.preventDefault();
+
+            const files = e.dataTransfer.files;
+
+            if(files.length > 0){
+                const file = files[0];
+                console.log(file);
+            }
+        });
+    </script>
+</body>
+</html>

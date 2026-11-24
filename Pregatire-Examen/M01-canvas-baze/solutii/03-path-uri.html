@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 03 · SOLUȚIE</title>
+    <style>
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="300">
+        Browserul nu suportă canvas.
+    </canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const rad = (deg) => deg * Math.PI / 180;
+
+        // 1. Linia diagonală
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(canvas.width, canvas.height);
+        context.strokeStyle = 'black';
+        context.lineWidth = 2;
+        context.stroke();
+
+        // 2. Triunghiul
+        context.beginPath();
+        context.moveTo(50, 250);
+        context.lineTo(150, 100);
+        context.lineTo(250, 250);
+        context.closePath();          // la fill() s-ar închide oricum; contează pentru stroke()
+        context.fillStyle = 'green';
+        context.fill();
+
+        // 3. Cercul: arc de la 0 la 2π
+        context.beginPath();
+        context.arc(380, 90, 50, 0, 2 * Math.PI);
+        context.fillStyle = 'orange';
+        context.fill();
+
+        // 4. Pac-Man: centru → arc 30°..330° → înapoi în centru
+        context.beginPath();
+        context.moveTo(380, 220);
+        context.arc(380, 220, 50, rad(30), rad(330));
+        context.closePath();
+        context.fillStyle = 'gold';
+        context.fill();
+
+        // RĂSPUNS: fără beginPath() la cerc, path-ul curent conține încă triunghiul.
+        // fill() cu 'orange' umple TOT path-ul, deci și triunghiul devine portocaliu.
+        // (Iar fără moveTo, arcul s-ar lega cu o linie de ultimul punct al triunghiului.)
+        // Regula: fiecare formă nouă începe cu beginPath().
+    </script>
+</body>
+</html>

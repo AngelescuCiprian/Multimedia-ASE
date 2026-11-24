@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 05 · Click pe canvas</title>
+    <style>
+        canvas { border: 1px solid black; display: block; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="300">
+        Browserul nu suportă canvas.
+    </canvas>
+    <button id="btn-clear">Șterge tot</button>
+
+    <script>
+        /*
+         * CERINȚĂ
+         * 1. La CLICK pe canvas: apare un cerc albastru plin, raza 10, exact unde ai dat click.
+         * 2. La MIȘCAREA mouse-ului peste canvas: în colțul stânga-sus scrie "x: 123, y: 45"
+         *    (coordonatele curente), font 14px monospace.
+         * 3. "Șterge tot" elimină toate cercurile.
+         *
+         * CAPCANA: dacă la mousemove scrii direct textul, se suprapune peste textul vechi.
+         * Dacă dai clearRect, dispar și cercurile. Soluția: ține cercurile într-un ARRAY
+         * (starea) și fă o funcție draw() care redesenează TOTUL: cercurile + textul.
+         *
+         * Indicii: e.offsetX, e.offsetY; evenimentele 'click' și 'mousemove'.
+         */
+
+        const circles = [];           // ex: [{x: 10, y: 20}, ...]
+        let mouse = { x: 0, y: 0 };   // ultima poziție a mouse-ului
+
+        // TODO 1: canvas + context
+
+        // TODO 2: draw(): clearRect → toate cercurile din `circles` → textul cu coordonatele
+
+        // TODO 3: click → push în circles → draw()
+
+        // TODO 4: mousemove → actualizează mouse → draw()
+
+        // TODO 5: buton → golește array-ul (circles.length = 0) → draw()
+    </script>
+</body>
+</html>

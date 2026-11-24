@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Model examen 1 · SOLUȚIE</title>
+    <style>
+        svg, canvas { border: 1px solid black; display: block; margin: 8px 0; }
+
+        /* b) culoarea și hover-ul din CSS. În SVG culoarea de umplere e `fill`, nu `background`! */
+        #red-rect { fill: red; }
+        #red-rect:hover { fill: blue; }
+    </style>
+</head>
+<body>
+    <!-- a) cele 3 elemente; `controls` afișează interfața implicită a browserului -->
+    <svg id="svg" width="400" height="200"></svg>
+
+    <audio id="audio" controls src="../../media/audio.mp3">
+        Browserul nu suportă elementul audio.
+    </audio>
+
+    <canvas id="canvas" width="400" height="100">
+        Browserul nu suportă canvas.
+    </canvas>
+
+    <script>
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        const svg = document.getElementById('svg');
+        const audio = document.getElementById('audio');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        // ---------------------------------------------------------------
+        // b) Dreptunghi roșu în colțul dreapta-jos al SVG-ului
+        // ---------------------------------------------------------------
+        const svgWidth = Number(svg.getAttribute('width'));     // 400
+        const svgHeight = Number(svg.getAttribute('height'));   // 200
+        const rectWidth = 80;
+        const rectHeight = 50;
+
+        // Elementele SVG se creează cu createElementNS + namespace. Cu createElement simplu NU apar!
+        const rect = document.createElementNS(SVG_NS, 'rect');
+        rect.setAttribute('id', 'red-rect');
+        rect.setAttribute('x', svgWidth - rectWidth);      // aceeași formulă de colț ca la canvas
+        rect.setAttribute('y', svgHeight - rectHeight);
+        rect.setAttribute('width', rectWidth);
+        rect.setAttribute('height', rectHeight);
+        svg.appendChild(rect);
+
+        // ALTERNATIVA 1 (cea mai scurtă, perfect validă la examen): direct în HTML
+        //   <svg width="400" height="200">
+        //       <rect id="red-rect" x="320" y="150" width="80" height="50" />
+        //   </svg>
+        //
+        // ALTERNATIVA 2 pentru hover (din JS, în loc de CSS):
+        //   rect.addEventListener('mouseenter', () => rect.setAttribute('fill', 'blue'));
+        //   rect.addEventListener('mouseleave', () => rect.setAttribute('fill', 'red'));
+
+        // ---------------------------------------------------------------
+        // c) Durata audio pe canvas
+        // ---------------------------------------------------------------
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        function drawDuration() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.font = 'bold 32px Georgia';
+            context.fillStyle = 'darkgreen';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('Durata: ' + formatTime(audio.duration), canvas.width / 2, canvas.height / 2);
+        }
+
+        // CAPCANA: la încărcarea paginii audio.duration e NaN. Fișierul nu s-a încărcat încă.
+        // Durata e disponibilă abia după evenimentul 'loadedmetadata' (sau 'durationchange', ca la seminar).
+        audio.addEventListener('loadedmetadata', drawDuration);
+
+        // Siguranță: dacă metadatele s-au încărcat deja înainte să atașăm listener-ul
+        // (de ex. fișier în cache), evenimentul nu mai vine, deci desenăm direct.
+        if (audio.readyState >= 1) {   // 1 = HAVE_METADATA
+            drawDuration();
+        }
+    </script>
+</body>
+</html>

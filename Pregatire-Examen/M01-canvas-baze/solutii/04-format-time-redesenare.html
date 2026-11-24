@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 04 · SOLUȚIE</title>
+    <style>
+        canvas { border: 1px solid black; display: block; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="120">
+        Browserul nu suportă canvas.
+    </canvas>
+    <button id="btn-forward">+15 s</button>
+    <button id="btn-reset">Reset</button>
+
+    <script>
+        let seconds = 0;
+
+        /**
+         * Transformă secunde în "mm:ss".
+         * @param {number} seconds
+         * @returns {string}
+         */
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        function draw() {
+            // 1. șterge (fundalul acoperă oricum tot, dar clearRect e reflexul corect)
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 2. fundal
+            context.fillStyle = '#FFF8DC';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 3. text centrat
+            context.font = '32px Arial';
+            context.fillStyle = 'black';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText('Timp: ' + formatTime(seconds), canvas.width / 2, canvas.height / 2);
+        }
+
+        document.getElementById('btn-forward').addEventListener('click', () => {
+            seconds += 15;   // schimbi starea…
+            draw();          // …și redesenezi
+        });
+
+        document.getElementById('btn-reset').addEventListener('click', () => {
+            seconds = 0;
+            draw();
+        });
+
+        draw();   // desenul inițial
+
+        console.log(formatTime(0), formatTime(7.9), formatTime(207.6), formatTime(3600));
+        // → 00:00 00:07 03:27 60:00
+
+        // EXPERIMENT: fără ștergere, textele noi se desenează PESTE cele vechi și
+        // cifrele devin un bloc ilizibil. Canvas-ul nu „înlocuiește” textul, doar adaugă pixeli.
+    </script>
+</body>
+</html>

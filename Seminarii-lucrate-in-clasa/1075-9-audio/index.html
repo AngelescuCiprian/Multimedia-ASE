@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio</title>
+</head>
+<body>
+    <audio id="audio" controls src="media/Silent Night (Harp Version) - John Abbot.mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <button id="btn-play-pause">Play</button>
+    <span id="audio-current-time"></span>
+    <span id="audio-duration"></span>
+
+    <script>
+        'use strict'
+
+        const audio = document.getElementById('audio')
+        const audioCurrentTime = document.getElementById('audio-current-time')
+        const audioDuration = document.getElementById('audio-duration')
+        const btnPlayPause = document.getElementById('btn-play-pause')
+
+        btnPlayPause.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play()
+            } else {
+                audio.pause()
+            }
+        })
+
+        // Textul urmeaza starea reala, deci merge si cu controalele native
+        audio.addEventListener('play', () => { btnPlayPause.textContent = 'Pause' })
+        audio.addEventListener('pause', () => { btnPlayPause.textContent = 'Play' })
+
+        audio.addEventListener('durationchange', () => {
+            audioDuration.textContent=audio.duration
+        })
+        audio.addEventListener('timeupdate',()=>
+    {
+        audioCurrentTime.textContent=audio.currentTime
+    })
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 06 · Bar chart de la zero</title>
+</head>
+<body>
+    <canvas id="chart" style="width: 600px; height: 400px; border: 1px solid black;">
+        Browserul nu suportă canvas.
+    </canvas>
+    <div>
+        <button id="btn-random">Date noi</button>
+        <button id="btn-download">Download</button>
+    </div>
+
+    <script>
+        /*
+         * REGULĂ: NU te uita în codul de la seminar (1073-4-bar-chart-library) până nu termini.
+         *
+         * CERINȚĂ
+         * Scrie funcția drawBarChart(canvas, values) care:
+         * 1. Face ca rezoluția canvas-ului să fie egală cu mărimea afișată (din CSS).
+         *    (De ce? Vezi LECTIE.md, secțiunea 2. Fără asta, totul iese blurat.)
+         * 2. Desenează fundal #DEDEDE.
+         * 3. Pentru fiecare valoare desenează o bară roșie:
+         *      - fiecare valoare are o „felie” de lățime egală: sliceWidth = canvas.width / values.length
+         *      - bara are jumătate din lățimea feliei și e centrată în felie
+         *      - cea mai mare valoare ocupă 90% din înălțimea canvas-ului (factor de scalare!)
+         *      - barele „stau” pe marginea de jos
+         * 4. Deasupra fiecărei bare scrie valoarea, centrată pe bară, font 16px Arial.
+         *
+         * 5. "Date noi" → generează 5–10 valori aleatoare între 1 și 100 și redesenează.
+         * 6. "Download" → descarcă graficul ca PNG (toDataURL).
+         *
+         * Gândește pe hârtie ÎNAINTE de cod: pentru values = [300, 400, 500] pe 600x400,
+         * cât e sliceWidth? Cât e factorul de scalare? Ce x, y, w, h are bara a doua?
+         * Scrie calculul în comentariul de mai jos.
+         */
+
+        // CALCUL PE HÂRTIE (values = [300, 400, 500], canvas 600x400):
+        // sliceWidth =
+        // scaleFactor =
+        // bara 2: x = ..., y = ..., w = ..., h = ...
+
+        // TODO 1: function drawBarChart(canvas, values) { ... }
+
+        // TODO 2: desen inițial cu [300, 400, 500]
+
+        // TODO 3: butonul "Date noi"
+
+        // TODO 4: butonul "Download"
+    </script>
+</body>
+</html>

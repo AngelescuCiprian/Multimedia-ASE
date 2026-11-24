@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 01 · SOLUȚIE</title>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="300">
+        Browserul nu suportă canvas.
+    </canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        // 1. Fundal: un fillRect cât tot canvas-ul
+        context.fillStyle = '#DEDEDE';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 2. Colțurile: x = width - size, y = height - size
+        const size = 50;
+        context.fillStyle = 'red';
+        context.fillRect(0, 0, size, size);                                          // stânga-sus
+        context.fillRect(canvas.width - size, 0, size, size);                        // dreapta-sus
+        context.fillRect(0, canvas.height - size, size, size);                       // stânga-jos
+        context.fillRect(canvas.width - size, canvas.height - size, size, size);     // dreapta-jos
+
+        // 3. Centru: (spațiul total - dimensiunea formei) / 2
+        const w = 120;
+        const h = 60;
+        context.strokeStyle = 'blue';
+        context.lineWidth = 4;
+        context.strokeRect((canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+
+        // RĂSPUNS: conturul se desenează CENTRAT pe marginea dreptunghiului:
+        // jumătate din lineWidth (2px) în interior, jumătate (2px) în exterior.
+        // Vizual are 124x64. Contează când desenezi un contur lipit de marginea canvas-ului:
+        // jumătate din el iese din canvas și nu se vede.
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 02 · SOLUȚIE</title>
+    <style>
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="300">
+        Browserul nu suportă canvas.
+    </canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        // 1. Titlul centrat: textAlign + textBaseline fac ca (x, y) să fie CENTRUL textului
+        const title = 'Multimedia';
+        const fontSize = 36;
+        context.font = `bold ${fontSize}px Arial`;
+        context.fillStyle = 'navy';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        context.fillText(title, cx, cy);
+
+        // 2. Chenarul: measureText cu ACELAȘI font ca textul (fontul e încă setat)
+        const padding = 10;
+        const textWidth = context.measureText(title).width;
+        const boxWidth = textWidth + 2 * padding;
+        const boxHeight = fontSize + 2 * padding;
+        context.strokeStyle = 'red';
+        context.lineWidth = 1;
+        context.strokeRect(cx - boxWidth / 2, cy - boxHeight / 2, boxWidth, boxHeight);
+
+        // 3. Dreapta-jos: cu 'right' + 'bottom', punctul (x, y) e colțul dreapta-jos al textului
+        context.font = '20px monospace';
+        context.fillStyle = 'black';
+        context.textAlign = 'right';
+        context.textBaseline = 'bottom';
+        context.fillText('03:27', canvas.width - 10, canvas.height - 10);
+
+        // 4. Stânga-sus: TREBUIE resetat alinierea, altfel textul s-ar alinia la dreapta
+        //    față de x = 10 și ar ieși din canvas (spre stânga).
+        context.textAlign = 'left';
+        context.textBaseline = 'top';
+        context.fillText('stânga-sus', 10, 10);
+
+        // Lecția: stilurile contextului rămân setate. Când schimbi ceva pentru un desen,
+        // reseteaz-o pentru următorul (sau folosește save()/restore(), vezi M02).
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Element</title>
+</head>
+<body>
+    <audio 
+        id='audio-player'
+        controls
+        src="media/Silent Night (Harp Version) - John Abbot.mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <button id="btn-play-pause">Play</button>
+    <div>
+        <span id="audio-current-time">...</span> / <span id="audio-duration">...</span>
+    </div>
+
+    <ul id="playlist"></ul>
+
+    <script>
+        const tracks = [
+            {
+                title: 'Moonlight Sonata', 
+                url: 'media/Beethoven-Moonlight-Sonata.mp3'
+            },
+            {
+                title: 'Canon in D Major',
+                url: 'media/Pachelbel-Canon-in-D-Major.mp3'
+            },
+            {
+                title: 'Bolero',
+                url: 'media/Ravel-Bolero.mp3'
+            }
+        ];
+
+        const audioPlayer = document.getElementById('audio-player');
+        const btnPlayPause = document.getElementById('btn-play-pause');
+        const audioCurrentTime = document.getElementById('audio-current-time');
+        const audioDuration = document.getElementById('audio-duration');
+        const playlist = document.getElementById('playlist');
+
+        const fragment = document.createDocumentFragment();
+        tracks.forEach(track => {
+            const li = document.createElement('li');
+            li.textContent = track.title;
+            li.dataset.url = track.url;
+            li.addEventListener('click', ()=>{
+                playByUrl(track.url);
+            });
+            fragment.appendChild(li);
+        })
+        playlist.appendChild(fragment);
+
+        function playByUrl(url){
+            audioPlayer.src = url;
+            audioPlayer.play();
+        }
+
+        btnPlayPause.addEventListener('click', ()=>{
+            if(audioPlayer.paused){
+                audioPlayer.play();
+                btnPlayPause.textContent = 'Pause';
+            }
+            else{
+                audioPlayer.pause();
+                btnPlayPause.textContent = 'Play';
+            }
+        });
+        audioPlayer.addEventListener('timeupdate', ()=>{
+            audioCurrentTime.textContent = formatTime(audioPlayer.currentTime);
+        });
+        audioPlayer.addEventListener('durationchange', ()=>{
+            audioDuration.textContent = formatTime(audioPlayer.duration);
+        })
+
+        audioPlayer.addEventListener('ended', ()=>{
+            alert('ended');
+        });
+
+        function formatTime(seconds){
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>

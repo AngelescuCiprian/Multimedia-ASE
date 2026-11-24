@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Model examen 2 · SOLUȚIE</title>
+    <style>
+        svg, canvas { border: 1px solid black; display: block; margin: 8px 0; }
+    </style>
+</head>
+<body>
+    <!-- a) -->
+    <svg id="svg" width="400" height="100"></svg>
+
+    <audio id="audio" controls src="../../media/audio.mp3">
+        Browserul nu suportă elementul audio.
+    </audio>
+
+    <canvas id="canvas" width="400" height="250">
+        Browserul nu suportă canvas.
+    </canvas>
+
+    <script>
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        const svg = document.getElementById('svg');
+        const audio = document.getElementById('audio');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        // ---------------------------------------------------------------
+        // b) Timpul curent în SVG
+        // ---------------------------------------------------------------
+        // Spre deosebire de canvas, în SVG creezi UN SINGUR element <text>
+        // și îi schimbi doar conținutul. Nu ștergi și nu redesenezi nimic.
+        const timeText = document.createElementNS(SVG_NS, 'text');
+        timeText.setAttribute('x', 200);                       // centrul SVG-ului (400 / 2)
+        timeText.setAttribute('y', 50);                        // (100 / 2)
+        timeText.setAttribute('text-anchor', 'middle');        // ≈ textAlign = 'center'
+        timeText.setAttribute('dominant-baseline', 'middle');  // ≈ textBaseline = 'middle'
+        timeText.setAttribute('font-size', 36);
+        timeText.setAttribute('font-family', 'monospace');
+        timeText.textContent = formatTime(0);
+        svg.appendChild(timeText);
+
+        // 'timeupdate' vine de ~4 ori pe secundă cât timp merge audio-ul (și la seek)
+        audio.addEventListener('timeupdate', () => {
+            timeText.textContent = formatTime(audio.currentTime);
+        });
+
+        // Alternativa direct în HTML:
+        //   <svg width="400" height="100"><text id="time-text" x="200" y="50" text-anchor="middle">00:00</text></svg>
+        //   … și în JS doar: document.getElementById('time-text').textContent = …
+
+        // ---------------------------------------------------------------
+        // c) Pătrat rotit la 45° pe canvas
+        // ---------------------------------------------------------------
+        // rotate() rotește tot SISTEMUL DE COORDONATE în jurul originii (0, 0), nu forma.
+        // Ca să rotești pătratul în jurul propriului centru:
+        //   1. muți originea în centrul unde vrei pătratul (translate)
+        //   2. rotești
+        //   3. desenezi pătratul CENTRAT în noua origine: (-size/2, -size/2)
+        //   4. restore(): anulezi transformarea pentru desenele următoare
+        const size = 120;
+
+        context.save();
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(45 * Math.PI / 180);                 // = Math.PI / 4 (radiani!)
+        context.fillStyle = 'purple';
+        context.fillRect(-size / 2, -size / 2, size, size);
+        context.restore();
+
+        // Verificare: diagonala pătratului = size * √2 ≈ 170px, deci canvas-ul trebuie să aibă
+        // cel puțin 170px înălțime, altfel vârfurile se taie.
+        //
+        // GREȘEALA tipică: context.rotate(45) → 45 RADIANI (≈ 2578°), iar pătratul apare oriunde.
+        // GREȘEALA 2: rotate fără translate → pătratul se rotește în jurul colțului (0,0)
+        //             și jumătate din el iese din canvas.
+    </script>
+</body>
+</html>

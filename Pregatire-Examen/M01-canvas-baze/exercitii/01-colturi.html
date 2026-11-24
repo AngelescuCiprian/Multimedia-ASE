@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 01 · Colțuri și centru</title>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="300">
+        Browserul nu suportă canvas.
+    </canvas>
+
+    <script>
+        /*
+         * CERINȚĂ
+         * 1. Umple tot canvas-ul cu culoarea #DEDEDE (fundal gri).
+         * 2. Desenează un pătrat ROȘU de 50x50 în fiecare dintre cele 4 colțuri.
+         * 3. Desenează în CENTRUL canvas-ului un dreptunghi de 120x60 doar cu CONTUR albastru, gros de 4px.
+         *
+         * REGULĂ: nu ai voie să scrii numere ca 350 sau 250 pentru poziții.
+         *         Folosește canvas.width / canvas.height și dimensiunile formei.
+         *
+         * TEST: schimbă width="400" în width="600" (din HTML). Pătratele trebuie să rămână în colțuri.
+         *
+         * ÎNTREBARE (răspunde în comentariu): de ce chenarul albastru pare puțin
+         * „mai mare” decât 120x60?
+         */
+
+        // TODO 1: ia canvas-ul și contextul 2d
+        
+        let canvas=document.querySelector('canvas')
+        let ctx=canvas.getContext('2d')
+        // TODO 2: fundalul
+        ctx.fillStyle="#DEDEDE"
+        ctx.fillRect(0,0,canvas.width,canvas.height)
+        // TODO 3: cele 4 pătrate (definește const size = 50)
+        const size=50
+        ctx.fillStyle="#FF0000"
+        ctx.fillRect(0,0,size,size)
+        ctx.fillRect(0,canvas.height-size,size,size)
+        ctx.fillRect(canvas.width-size,0,size,size)
+        ctx.fillRect(canvas.width-size,canvas.height-size,size,size)
+        // TODO 4: dreptunghiul din centru (strokeStyle, lineWidth, strokeRect)
+        ctx.strokeStyle="#0000FF"
+        ctx.lineWidth=4
+        const h=60
+        const w=120
+        ctx.strokeRect((canvas.width-w)/2,(canvas.height-h)/2,w,h)
+
+        // RĂSPUNS la întrebare:
+        //Pe canvas, linia de contur (stroke) se desenează centrată pe marginea matematică a formei. La o grosime lineWidth = 4, 2 pixeli se întind spre interiorul dreptunghiului și 2 pixeli ies în exteriorul lui (pe toate cele 4 laturi). Astfel, dimensiunea totală vizibilă pe ecran devine 124 x 64 pixeli (120 + 2 + 2 pe lățime și 60 + 2 + 2 pe înălțime).
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>M01 · Ex 06 · SOLUȚIE</title>
+</head>
+<body>
+    <canvas id="chart" style="width: 600px; height: 400px; border: 1px solid black;">
+        Browserul nu suportă canvas.
+    </canvas>
+    <div>
+        <button id="btn-random">Date noi</button>
+        <button id="btn-download">Download</button>
+    </div>
+
+    <script>
+        // CALCUL PE HÂRTIE (values = [300, 400, 500], canvas 600x400):
+        // sliceWidth  = 600 / 3 = 200
+        // scaleFactor = 400 / 500 = 0.8  (px pe unitate; cu 90% → bara maximă are 360px)
+        // bara 2 (i = 1, valoare 400): h = 400 * 0.8 * 0.9 = 288
+        //                               x = 1 * 200 + 200 / 4 = 250, w = 200 / 2 = 100
+        //                               y = 400 - 288 = 112
+
+        /**
+         * @param {HTMLCanvasElement} canvas
+         * @param {number[]} values
+         */
+        function drawBarChart(canvas, values) {
+            // 1. rezoluție = mărimea afișată (asta și șterge canvas-ul)
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+
+            const context = canvas.getContext('2d');
+
+            // 2. fundal
+            context.fillStyle = '#DEDEDE';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 3. bare
+            const sliceWidth = canvas.width / values.length;
+            const maxValue = Math.max(...values);          // spread: Math.max nu primește array
+            const scaleFactor = canvas.height / maxValue;
+
+            context.font = '16px Arial';
+            context.textAlign = 'center';
+            context.textBaseline = 'bottom';
+
+            for (let i = 0; i < values.length; i++) {
+                const barHeight = values[i] * scaleFactor * 0.9;
+                const barWidth = sliceWidth / 2;
+                const barX = i * sliceWidth + sliceWidth / 4;   // centrat: 1/4 liber stânga, 1/4 dreapta
+                const barY = canvas.height - barHeight;         // y crește în jos!
+
+                context.fillStyle = 'red';
+                context.fillRect(barX, barY, barWidth, barHeight);
+
+                // 4. valoarea deasupra barei, centrată pe bară
+                context.fillStyle = 'black';
+                context.fillText(values[i], barX + barWidth / 2, barY - 4);
+            }
+        }
+
+        const chart = document.getElementById('chart');
+        drawBarChart(chart, [300, 400, 500]);
+
+        document.getElementById('btn-random').addEventListener('click', () => {
+            const count = 5 + Math.floor(Math.random() * 6);            // 5..10
+            const values = Array.from({ length: count }, () => 1 + Math.floor(Math.random() * 100));
+            drawBarChart(chart, values);
+        });
+
+        document.getElementById('btn-download').addEventListener('click', () => {
+            const anchor = document.createElement('a');
+            anchor.href = chart.toDataURL('image/png');
+            anchor.download = 'chart.png';
+            anchor.click();
+        });
+
+        // Comparație cu seminarul: proful pune același cod într-o CLASĂ (export class BarChart)
+        // cu #canvas privat și o metodă draw(values, options). Logica de desen e identică.
+        // Clasa doar o „împachetează” ca să fie refolosibilă (o refolosește la histogramă).
+    </script>
+</body>
+</html>

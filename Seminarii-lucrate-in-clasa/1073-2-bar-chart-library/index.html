@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar Chart</title>
+</head>
+<body>
+    <canvas id="chart-canvas" style="width: 600px; height: 400px;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <button id="download-btn">Download</button>
+
+    <script type="module">
+        import {BarChart} from './canvas-bar-chart-library.js';
+
+        const chartCanvas = document.getElementById('chart-canvas');
+        const barChart = new BarChart(chartCanvas);
+        //console.log(barChart.canvas); 
+        barChart.draw([3, 4, 5],{drawOutline:true, drawValues:true});
+
+        document.getElementById('download-btn').addEventListener('click', ()=>
+    {
+        barChart.download();
+    })
+    </script>
+</body>
+</html>

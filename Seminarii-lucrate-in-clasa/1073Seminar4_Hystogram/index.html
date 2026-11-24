@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histogram</title>
+</head>
+<body>
+    <p id="error-message" style="color: red;"></p>
+
+    <canvas id="image-canvas">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <canvas id="histogram-canvas">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <script type="module">
+        import {BarChart} from './canvas-bar-chart-library.js'
+
+        //selectors
+        const imageCanvas=document.getElementById('image-canvas')
+        const histogramCanvas=document.getElementById('histogram-canvas')
+        const errorMessage=document.getElementById('error-message')
+        //Events
+        document.addEventListener('dragover', (e) =>
+    {
+        e.preventDefault();
+    })
+        document.addEventListener('drop', (e) =>
+    {
+        e.preventDefault();
+        console.log('Drop');
+        // console.log(e)
+        const files=e.dataTransfer.files;
+        if(files.length>0){
+            const file=files[0]
+            const fileReader=new FileReader();
+            fileReader.addEventListener('load', () => 
+        {
+            const img=document.createElement('img');
+            img.addEventListener('load', ()=>
+        {
+            errorMessage.textContent='';
+            imageCanvas.width=img.naturalWidth;
+            imageCanvas.height=img.naturalHeight;
+            const context=imageCanvas.getContext('2d');
+            context.drawImage(img,0,0);
+        })
+            img.addEventListener('error', ()=>
+        {
+            console.error('Could not load the image')
+            errorMessage.textContent=`"${file.name}" is not a valid image.`;
+            const context=imageCanvas.getContext('2d');
+            context.clearRect(0,0,imageCanvas.width,imageCanvas.height);
+        })
+            img.src=fileReader.result;
+        })
+            fileReader.addEventListener('error', () =>
+        {
+            console.error('Could not read the file')
+        })
+            fileReader.readAsDataURL(file);
+            console.log(file)
+            console.log(file.type)
+        }       
+    });
+
+    </script>
+</body>
+</html>
